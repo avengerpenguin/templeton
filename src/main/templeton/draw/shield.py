@@ -4,7 +4,7 @@ from templeton.draw.core import BaseIllustrator
 
 class ShieldIllustrator(BaseIllustrator):
     def illustrate(self, shield_design):
-        image = Image.open("/home/ross/projects/coa/templeton/trunk/target/templeton-0.0.1/templeton/resources/template.png")
+        image = Image.open("templeton/resources/template.png")
         
         c1 = ImageColor.getrgb('#%s' % shield_design['colour1_hex'])
         c2 = ImageColor.getrgb('#%s' % shield_design['colour2_hex'])
