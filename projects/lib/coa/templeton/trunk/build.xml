@@ -1,0 +1,144 @@
+<project name="templeton" default="all">
+
+  <property name="project.version" value="0.0.1"/>
+  <property name="project.email" value="packages@avengerpenguin.com"/>
+  <property name="project.package.name" value="${ant.project.name}-${project.version}"/>
+  <property name="project.description" value="Retrieve social network profile data and generate a Coat of Arms."/>
+
+  <property name="src.dir" value="src/main/${ant.project.name}"/>
+  <property name="test.dir" value="src/test"/>
+  <property name="target.dir" value="target"/>
+  <property name="build.dir" value="${target.dir}/${project.package.name}"/>
+  <property name="test.build.dir" value="${target.dir}/${project.package.name}"/>
+
+  <target name="clean" description="Delete all generated files">
+    <delete dir="target"/>
+  </target>
+
+  <target name="build">
+    <mkdir dir="${build.dir}"/>
+    <exec executable="rsync" failonerror="true">
+      <arg value="--delete"/>
+      <arg value="--recursive"/>
+      <arg value="--exclude"/>
+      <arg value=".svn"/>
+      <arg value="${src.dir}"/>
+      <arg value="${build.dir}"/>
+    </exec>
+  </target>
+
+  <target name="test" depends="build">
+
+    <antcall target="ensureInstalled">
+      <param name="package.required" value="python-mock"/>
+    </antcall>
+    <antcall target="ensureInstalled">
+      <param name="package.required" value="python-nose"/>
+    </antcall>
+    <antcall target="ensureInstalled">
+      <param name="package.required" value="python-unit"/>
+    </antcall>
+
+    <exec executable="rsync" failonerror="true">
+      <arg value="--delete"/>
+      <arg value="--recursive"/>
+      <arg value="--exclude"/>
+      <arg value=".svn"/>
+      <arg value="${test.dir}"/>
+      <arg value="${test.build.dir}"/>
+    </exec>
+    <exec executable="nosetests" dir="${build.dir}" failonerror="true">
+      <arg value="test"/>
+    </exec>
+    <exec executable="nosetests" dir="${build.dir}" failonerror="true">
+      <arg value="--with-coverage"/>
+      <arg value="--cover-package=${ant.project.name}"/>
+      <arg value="test"/>
+    </exec>
+  </target>
+
+  <target name="check" depends="build">
+    <antcall target="ensureInstalled">
+      <param name="package.required" value="pylint"/>
+    </antcall>
+
+    <exec executable="pylint" dir="${build.dir}" failonerror="true">
+      <arg value="-r"/>
+      <arg value="n"/>
+      <arg value="${ant.project.name}"/>
+    </exec>
+  </target>
+
+  <target name="archive" depends="build">
+    <tar destfile="${target.dir}/${project.package.name}.tar" basedir="${build.dir}"/>
+    <gzip
+	destfile="${target.dir}/${project.package.name}.tar.gz"
+	src="${target.dir}/${project.package.name}.tar"
+	/>
+    <delete file="${target.dir}/${project.package.name}.tar"/>
+  </target>
+
+  <target name="deb" depends="clean,archive">
+    <antcall target="ensureInstalled">
+      <param name="package.required" value="dh-make"/>
+    </antcall>
+
+    <exec executable="dh_make" dir="${target.dir}/${project.package.name}"
+	  failonerror="true">
+      <arg value="-indep"/>
+      <arg value="--single"/>
+      <arg value="--file"/>
+      <arg value="../${project.package.name}.tar.gz"/>
+      <arg value="--packagename"/>
+      <arg value="${ant.project.name}_${project.version}"/>
+      <arg value="--email"/>
+      <arg value="${project.email}"/>
+    </exec>
+
+    <property name="debian.dir" value="${target.dir}/${project.package.name}/debian"/>
+    <replace file="${debian.dir}/control" failOnNoReplacements="true">
+      <replacetoken><![CDATA[<insert the upstream URL, if relevant>]]></replacetoken>
+      <replacevalue>http://avengerpenguin.com/</replacevalue>
+    </replace>
+    <replace file="${debian.dir}/control" failOnNoReplacements="true" value="${project.description}">
+      <replacetoken><![CDATA[<insert up to 60 chars description>]]></replacetoken>
+    </replace>
+    
+  </target>
+
+  <target name="all">
+    <antcall target="clean"/>
+    <antcall target="build"/>
+    <antcall target="test"/>
+    <antcall target="check"/>
+    <antcall target="archive"/>
+  </target>
+
+  <target name="ensureInstalled">
+    <exec executable="echo">
+      <arg value="Checking if ${package.required} is installed..."/>
+    </exec>
+    <exec executable="dpkg" resultproperty="package.dpkgCheck.result" output="/dev/null">
+      <arg value="-s"/>
+      <arg value="${package.required}"/>
+    </exec>
+    <condition property="package.${package.required}.notInstalled">
+      <not>
+	<equals arg1="${package.dpkgCheck.result}" arg2="0"/>
+      </not>
+    </condition>
+    <antcall target="installPackage"/>
+  </target>
+
+  <target name="installPackage" if="package.${package.required}.notInstalled">
+    <exec executable="echo">
+      <arg value="Installing ${package.required}..."/>
+    </exec>
+    <exec executable="sudo" failonerror="true">
+      <arg value="aptitude"/>
+      <arg value="install"/>
+      <arg value="${package.required}"/>
+    </exec>
+  </target>
+
+</project>
