@@ -65,6 +65,7 @@
     <exec executable="pylint" dir="${build.dir}" failonerror="true">
       <arg value="-r"/>
       <arg value="n"/>
+      <arg value="--disable=W0142,R0903,R0922"/>
       <arg value="${ant.project.name}"/>
     </exec>
   </target>
