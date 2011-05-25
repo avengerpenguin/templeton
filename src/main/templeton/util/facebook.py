@@ -37,19 +37,7 @@ import cgi
 import hashlib
 import time
 import urllib
-
-# Find a JSON parser
-try:
-    import json
-    _parse_json = lambda s: json.loads(s)
-except ImportError:
-    try:
-        import simplejson
-        _parse_json = lambda s: simplejson.loads(s)
-    except ImportError:
-        # For Google AppEngine
-        from django.utils import simplejson
-        _parse_json = lambda s: simplejson.loads(s)
+import json
         
 
 class GraphAPI(object):
@@ -83,9 +71,9 @@ class GraphAPI(object):
     def __init__(self, access_token=None):
         self.access_token = access_token
 
-    def get_object(self, id, **args):
+    def get_object(self, object_id, **args):
         """Fetchs the given object from the graph."""
-        return self.request(id, args)
+        return self.request(object_id, args)
 
     def get_objects(self, ids, **args):
         """Fetchs all of the given object from the graph.
@@ -96,9 +84,9 @@ class GraphAPI(object):
         args["ids"] = ",".join(ids)
         return self.request("", args)
 
-    def get_connections(self, id, connection_name, **args):
+    def get_connections(self, object_id, connection_name, **args):
         """Fetchs the connections for given object."""
-        return self.request(id + "/" + connection_name, args)
+        return self.request(object_id + "/" + connection_name, args)
 
     def put_object(self, parent_object, connection_name, **data):
         """Writes the given object to the graph, connected to the given parent.
@@ -123,9 +111,11 @@ class GraphAPI(object):
         extended permissions.
         """
         assert self.access_token, "Write operations require an access token"
-        return self.request(parent_object + "/" + connection_name, post_args=data)
+        return self.request(
+            parent_object + "/" + connection_name, post_args=data
+            )
 
-    def put_wall_post(self, message, attachment={}, profile_id="me"):
+    def put_wall_post(self, message, attachment=None, profile_id="me"):
         """Writes a wall post to the given profile's wall.
 
         We default to writing to the authenticated user's wall if no
@@ -141,7 +131,11 @@ class GraphAPI(object):
              "picture": "http://www.example.com/thumbnail.jpg"}
 
         """
-        return self.put_object(profile_id, "feed", message=message, **attachment)
+        if not attachment:
+            attachment = {}
+        return self.put_object(
+            profile_id, "feed", message=message, **attachment
+            )
 
     def put_comment(self, object_id, message):
         """Writes the given comment on the given post."""
@@ -151,9 +145,9 @@ class GraphAPI(object):
         """Likes the given post."""
         return self.put_object(object_id, "likes")
 
-    def delete_object(self, id):
+    def delete_object(self, object_id):
         """Deletes the object with the given ID from the graph."""
-        self.request(id, post_args={"method": "delete"})
+        self.request(object_id, post_args={"method": "delete"})
 
     def request(self, path, args=None, post_args=None):
         """Fetches the given path in the Graph API.
@@ -161,29 +155,33 @@ class GraphAPI(object):
         We translate args to a valid query string. If post_args is given,
         we send a POST request to the given path with the given arguments.
         """
-        if not args: args = {}
+        if not args:
+            args = {}
         if self.access_token:
             if post_args is not None:
                 post_args["access_token"] = self.access_token
             else:
                 args["access_token"] = self.access_token
         post_data = None if post_args is None else urllib.urlencode(post_args)
-        file = urllib.urlopen("https://graph.facebook.com/" + path + "?" +
-                              urllib.urlencode(args), post_data)
+        response_handle = urllib.urlopen("https://graph.facebook.com/"
+                                         + path + "?" +
+                                         urllib.urlencode(args), post_data)
         try:
-            response = _parse_json(file.read())
+            response = json.loads(response_handle.read())
         finally:
-            file.close()
+            response_handle.close()
         if response.get("error"):
             raise GraphAPIError(response["error"]["type"],
                                 response["error"]["message"])
         return response
 
-
 class GraphAPIError(Exception):
-    def __init__(self, type, message):
+    """
+    Encapsulates an error return in the JSON of a response from the API.
+    """
+    def __init__(self, error_type, message):
         Exception.__init__(self, message)
-        self.type = type
+        self.type = error_type
 
 
 def get_user_from_cookie(cookies, app_id, app_secret):
@@ -202,7 +200,8 @@ def get_user_from_cookie(cookies, app_id, app_secret):
     authentication at http://developers.facebook.com/docs/authentication/.
     """
     cookie = cookies.get("fbs_" + app_id, "")
-    if not cookie: return None
+    if not cookie:
+        return None
     args = dict((k, v[-1]) for k, v in cgi.parse_qs(cookie.strip('"')).items())
     payload = "".join(k + "=" + args[k] for k in sorted(args.keys())
                       if k != "sig")
