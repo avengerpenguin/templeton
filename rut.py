@@ -13,7 +13,7 @@ params = dict(
               author_email="ross.fenning@gmail.com",
               packages=['templeton', 'templeton.design', 'templeton.extract',
                         'templeton.draw', 'templeton.resources'],
-              depends=['python-mock', 'python-unittest', 'python-imaging']
+              depends=['python-mock', 'python-unit', 'python-imaging']
     )
 
 if __name__ == "__main__":
