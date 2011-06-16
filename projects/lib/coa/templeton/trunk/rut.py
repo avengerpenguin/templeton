@@ -10,7 +10,7 @@ params = dict(
               author="Ross Fenning", 
               author_email="ross.fenning@gmail.com",
               packages=['templeton', 'templeton.design', 'templeton.extract',
-                        'templeton.draw', 'templeton.resources', 'templeton.util'],
+                        'templeton.draw', 'templeton.util'],
               depends=['python-mock', 'python-unit', 'python-imaging']
     )
 
