@@ -5,7 +5,7 @@ from elk import core, python
 
 params = dict(
               name="templeton", 
-              version="0.0.4", 
+              version="0.0.5", 
               url="http://rossfenning.co.uk/", 
               author="Ross Fenning", 
               author_email="ross.fenning@gmail.com",
