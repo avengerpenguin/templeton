@@ -17,8 +17,12 @@ class ShieldIllustrator(BaseIllustrator):
         
         colour1 = ImageColor.getrgb('#%s' % shield_design['colour1_hex'])
         colour2 = ImageColor.getrgb('#%s' % shield_design['colour2_hex'])
-        
-        ImageDraw.floodfill(image, (5, 5), colour1)
-        ImageDraw.floodfill(image, (295, 5), colour2)
+
+        ImageDraw.floodfill(image, (116, 67), colour1)
+        ImageDraw.floodfill(image, (253, 77), colour2)
+        ImageDraw.floodfill(image, (144, 201), colour2)
+        ImageDraw.floodfill(image, (214, 198), colour1)
+        #ImageDraw.floodfill(image, (5, 5), colour1)
+        #ImageDraw.floodfill(image, (295, 5), colour2)
         return image
 
