@@ -16,9 +16,9 @@ class CoatOfArmsIllustrator(BaseIllustrator):
         Hands over to a ShieldIllustrator to generate a 300x300 shield image
         and places it centred within a 500x500 white box.
         """
-        image = Image.new('RGB', (400, 400), ImageColor.getrgb('#FFFFFF'))
+        image = Image.new('RGB', (380, 373), ImageColor.getrgb('#FFFFFF'))
         shield = ShieldIllustrator().illustrate(coa_design['shield'],
                                                 template_image)
-        image.paste(shield, (50, 50, 350, 350))
+        image.paste(shield, (0, 0, 380, 373))
 
         return image

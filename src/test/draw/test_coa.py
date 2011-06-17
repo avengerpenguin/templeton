@@ -14,6 +14,6 @@ class CoatOfArmsIllustratorTest(unittest.TestCase):
         designer = CoatOfArmsDesigner()
         design = designer.design(profile)
         coai = CoatOfArmsIllustrator()
-        template_image = Image.open("test/resources/template.png")
+        template_image = Image.open("test/resources/shield_and_motto_template.png")
         image = coai.illustrate(design, template_image)
         image.save(open('/tmp/out.png', 'w'))
