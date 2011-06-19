@@ -388,6 +388,8 @@ class ShieldDesigner(BaseDesigner):
             shield['colour2_hex'] = colour2[0]
             shield['colour2_name'] = colour2[1]
 
+        shield['motto'] = profile['family_name']
+
         return shield
 
     def pick_colours(self, seed):
