@@ -1,7 +1,7 @@
 """
 Classes for drawing a motto section under the shield.
 """
-import sys, uuid, os, subprocess
+import uuid, os, subprocess
 
 from PIL import Image, ImageColor, ImageDraw, ImageFont
 
