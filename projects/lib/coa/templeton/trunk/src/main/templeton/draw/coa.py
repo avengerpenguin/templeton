@@ -33,11 +33,12 @@ class CoatOfArmsIllustrator(BaseIllustrator):
                                               )
 
         motto_offset = (image.size[0] - motto.size[0]) / 2
+        r,g,b,a = motto.convert('RGBA').split()
         image.paste(motto,
                     (
-                     motto_offset, 200,
-                     motto_offset + motto.size[0], 200 + motto.size[1]
-                     )
+                     motto_offset, 255
+                     ),
+                    mask=a
                     )
 
         return image

@@ -10,7 +10,7 @@ class CoatOfArmsIllustratorTest(unittest.TestCase):
         pass
 
     def testIllustrate(self):
-        profile = {'family_name': 'Spem Successus Alit'}
+        profile = {'family_name': 'Fenning'}
         designer = CoatOfArmsDesigner()
         design = designer.design(profile)
         coai = CoatOfArmsIllustrator()

@@ -40,7 +40,7 @@ class MottoIllustrator(BaseIllustrator):
                                   [
                                    'convert', pre_filename, '-virtual-pixel',
                                    'transparent', '-rotate', '180', '-distort',
-                                   'Arc', '60', '180', '-rotate', '180',
+                                   'Arc', '140', '-rotate', '180',
                                    post_filename
                                    ],
                                    stderr=sys.stderr)
@@ -48,6 +48,7 @@ class MottoIllustrator(BaseIllustrator):
 
         curved_image = Image.open(post_filename)
         #curved_image = curved_image.convert('RGBA')
+
         os.remove(pre_filename)
         os.remove(post_filename)
 
