@@ -1,7 +1,7 @@
 """
 Contains class for illustrating the overall coat of arms.
 """
-from PIL import Image, ImageColor, ImageOps
+from PIL import Image
 
 from templeton.draw.core import BaseIllustrator
 from templeton.draw.shield import ShieldIllustrator
@@ -22,23 +22,14 @@ class CoatOfArmsIllustrator(BaseIllustrator):
                                                 template_image)
         image.paste(shield, (0, 0, 380, 373))
 
-        motto_template = Image.new(
-                                   'RGBA', (350, 50),
-                                   (0, 0, 0, 0)
-                                   )
-
+        motto_template = Image.new('RGBA', (350, 50), (0, 0, 0, 0))
         motto = MottoIllustrator().illustrate(
                                               coa_design['motto'],
                                               motto_template
                                               )
 
         motto_offset = (image.size[0] - motto.size[0]) / 2
-        r,g,b,a = motto.convert('RGBA').split()
-        image.paste(motto,
-                    (
-                     motto_offset, 255
-                     ),
-                    mask=a
-                    )
+        _, _, _, mask = motto.convert('RGBA').split()
+        image.paste(motto, (motto_offset, 255), mask=mask)
 
         return image
