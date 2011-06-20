@@ -42,8 +42,8 @@ class MottoIllustrator(BaseIllustrator):
                                    'transparent', '-rotate', '180', '-distort',
                                    'Arc', '140', '-rotate', '180',
                                    post_filename
-                                   ],
-                                   stderr=sys.stderr)
+                                   ]
+                                  )
         curver.wait()
 
         curved_image = Image.open(post_filename)
