@@ -19,6 +19,6 @@ class MottoDesigner(BaseDesigner):
             lipsum_generator.sentence_mean = 3
             lipsum_generator.sentence_sigma = 1
             
-            return lipsum_generator.generate_sentence()
+            return lipsum_generator.generate_sentence()[:-1]
         else:
             return None
