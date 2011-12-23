@@ -15,14 +15,12 @@ class ShieldIllustrator(BaseIllustrator):
         to two halves of an image.
         """
         
-        colour1 = ImageColor.getrgb('#%s' % shield_design['colour1_hex'])
-        colour2 = ImageColor.getrgb('#%s' % shield_design['colour2_hex'])
+        fur = ImageColor.getrgb('#%s' % shield_design['fur']['hex'])
+        tincture = ImageColor.getrgb('#%s' % shield_design['tincture']['hex'])
 
-        ImageDraw.floodfill(image, (116, 67), colour1)
-        ImageDraw.floodfill(image, (253, 77), colour2)
-        ImageDraw.floodfill(image, (144, 201), colour2)
-        ImageDraw.floodfill(image, (214, 198), colour1)
-        #ImageDraw.floodfill(image, (5, 5), colour1)
-        #ImageDraw.floodfill(image, (295, 5), colour2)
+        ImageDraw.floodfill(image, (116, 67), fur)
+        ImageDraw.floodfill(image, (253, 77), tincture)
+        ImageDraw.floodfill(image, (144, 201), tincture)
+        ImageDraw.floodfill(image, (214, 198), fur)
+
         return image
-
