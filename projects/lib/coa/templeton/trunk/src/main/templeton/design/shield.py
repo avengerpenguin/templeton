@@ -372,6 +372,9 @@ class ShieldDesigner(BaseDesigner):
         ("9ACD32","Yellow-green")
         ]
     
+    ordinary_list = ['cross', 'pale', 'fess', 'bend', 'chevron', 'saltire',
+                     'chief']
+    
     def design(self, profile):
         """
         Performs the design of the shield given a particular profile. Currently,
@@ -382,11 +385,10 @@ class ShieldDesigner(BaseDesigner):
         shield = dict()
 
         if profile.has_key('family_name'):
-            colour1, colour2 = self.pick_colours(profile['family_name'])
-            shield['colour1_hex'] = colour1[0]
-            shield['colour1_name'] = colour1[1]
-            shield['colour2_hex'] = colour2[0]
-            shield['colour2_name'] = colour2[1]
+            shield['ordinary'] = self.pick_ordinary(profile['family_name']) 
+            
+            shield['fur'], shield['tincture'] = self.pick_colours(
+                                                  profile['family_name'])
 
         return shield
 
@@ -403,6 +405,15 @@ class ShieldDesigner(BaseDesigner):
         colour2_hex, colour2_name = self.colourlist[hash_num % colour_count]
 
         return (
-            (colour1_hex, colour1_name),
-            (colour2_hex, colour2_name)
+            dict(hex=colour1_hex, name=colour1_name),
+            dict(hex=colour2_hex, name=colour2_name)
             )
+
+    def pick_ordinary(self, seed):
+        """
+        Takes a string seed and returns a random ordinary.
+        """
+
+        hash_num = int(hashlib.sha1(seed).hexdigest(), 16)
+        ordinary_count = len(self.ordinary_list)
+        return self.ordinary_list[hash_num % ordinary_count]
