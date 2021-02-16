@@ -1,6 +1,9 @@
-import os, unittest, random
+import os
+import random
+import unittest
 
 from templeton.design.shield import ShieldDesigner
+
 
 class ShieldDesignerTest(unittest.TestCase):
     def setUp(self):
@@ -15,10 +18,10 @@ class ShieldDesignerTest(unittest.TestCase):
         assert 2 == len(colours)
 
         for colour in colours:
-            assert colour.has_key('hex')
-            assert colour.has_key('name')
+            assert colour.has_key("hex")
+            assert colour.has_key("name")
 
-            assert (colour['hex'], colour['name']) in self.designer.colourlist
+            assert (colour["hex"], colour["name"]) in self.designer.colourlist
 
     def testPickOrdinaryReturnsAnOrdinary(self):
         seed = os.urandom(random.randint(1, 256))
@@ -28,12 +31,12 @@ class ShieldDesignerTest(unittest.TestCase):
 
     def testProfileWithSurnameMakesDesignReturnShieldWithTwoColours(self):
         design = self.designer.design(self.profile)
-        assert design.has_key('fur')
-        assert design.has_key('tincture')
-        for colour in design['fur'], design['tincture']:
-            assert colour.has_key('hex')
-            assert colour.has_key('name')
+        assert design.has_key("fur")
+        assert design.has_key("tincture")
+        for colour in design["fur"], design["tincture"]:
+            assert colour.has_key("hex")
+            assert colour.has_key("name")
 
     def testProfileWithSurnameMakesDesignReturnShieldWithOrdinary(self):
         design = self.designer.design(self.profile)
-        assert design.has_key('ordinary')
+        assert design.has_key("ordinary")

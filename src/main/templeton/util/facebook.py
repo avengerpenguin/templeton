@@ -35,12 +35,12 @@ user = facebook.get_user_from_cookie(self.request.cookies, key, secret)
 
 import cgi
 import hashlib
+import json
 import time
 import urllib
-import json
-        
 
-class GraphAPI(object):
+
+class GraphAPI:
     """A client for the Facebook Graph API.
 
     See http://developers.facebook.com/docs/api for complete documentation
@@ -68,6 +68,7 @@ class GraphAPI(object):
     get_user_from_cookie() method below to get the OAuth access token
     for the active user from the cookie saved by the SDK.
     """
+
     def __init__(self, access_token=None):
         self.access_token = access_token
 
@@ -111,9 +112,7 @@ class GraphAPI(object):
         extended permissions.
         """
         assert self.access_token, "Write operations require an access token"
-        return self.request(
-            parent_object + "/" + connection_name, post_args=data
-            )
+        return self.request(parent_object + "/" + connection_name, post_args=data)
 
     def put_wall_post(self, message, attachment=None, profile_id="me"):
         """Writes a wall post to the given profile's wall.
@@ -133,9 +132,7 @@ class GraphAPI(object):
         """
         if not attachment:
             attachment = {}
-        return self.put_object(
-            profile_id, "feed", message=message, **attachment
-            )
+        return self.put_object(profile_id, "feed", message=message, **attachment)
 
     def put_comment(self, object_id, message):
         """Writes the given comment on the given post."""
@@ -163,22 +160,24 @@ class GraphAPI(object):
             else:
                 args["access_token"] = self.access_token
         post_data = None if post_args is None else urllib.urlencode(post_args)
-        response_handle = urllib.urlopen("https://graph.facebook.com/"
-                                         + path + "?" +
-                                         urllib.urlencode(args), post_data)
+        response_handle = urllib.urlopen(
+            "https://graph.facebook.com/" + path + "?" + urllib.urlencode(args),
+            post_data,
+        )
         try:
             response = json.loads(response_handle.read())
         finally:
             response_handle.close()
         if response.get("error"):
-            raise GraphAPIError(response["error"]["type"],
-                                response["error"]["message"])
+            raise GraphAPIError(response["error"]["type"], response["error"]["message"])
         return response
+
 
 class GraphAPIError(Exception):
     """
     Encapsulates an error return in the JSON of a response from the API.
     """
+
     def __init__(self, error_type, message):
         Exception.__init__(self, message)
         self.type = error_type
@@ -202,9 +201,8 @@ def get_user_from_cookie(cookies, app_id, app_secret):
     cookie = cookies.get("fbs_" + app_id, "")
     if not cookie:
         return None
-    args = dict((k, v[-1]) for k, v in cgi.parse_qs(cookie.strip('"')).items())
-    payload = "".join(k + "=" + args[k] for k in sorted(args.keys())
-                      if k != "sig")
+    args = {k: v[-1] for k, v in cgi.parse_qs(cookie.strip('"')).items()}
+    payload = "".join(k + "=" + args[k] for k in sorted(args.keys()) if k != "sig")
     sig = hashlib.md5(payload + app_secret).hexdigest()
     expires = int(args["expires"])
     if sig == args.get("sig") and (expires == 0 or time.time() < expires):

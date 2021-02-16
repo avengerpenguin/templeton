@@ -2,7 +2,8 @@
 Classes that define global behaviour for all profile extractors.
 """
 
-class BaseExtractor(object):
+
+class BaseExtractor:
     """
     Base abstract class for defining functions common to all profile extractors.
     """
@@ -22,7 +23,7 @@ class BaseExtractor(object):
         Fetches a config value by key which may be useful to subclasses that
         require configuration.
         """
-        if (self.config.has_key(key)):
+        if self.config.has_key(key):
             return self.config[key]
         else:
             raise ConfigNotSetError(key)
@@ -36,7 +37,7 @@ class BaseExtractor(object):
         raise NotImplementedError(
             """This extractor doesn't know how to extract. Please override
 extract() method in subclass."""
-            )
+        )
 
 
 class ConfigNotSetError(Exception):
@@ -47,8 +48,8 @@ class ConfigNotSetError(Exception):
     """
 
     def __init__(self, key):
-        super(ConfigNotSetError, self).__init__() 
-        self.message = u'Config not set: %s' % key
+        super().__init__()
+        self.message = "Config not set: %s" % key
 
     def __unicode__(self):
         return self.message

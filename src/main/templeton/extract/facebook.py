@@ -5,6 +5,7 @@ Classes for extracting profile information from Facebook.
 from templeton.extract.core import BaseExtractor
 from templeton.util.facebook import GraphAPI
 
+
 class FacebookExtractor(BaseExtractor):
     """
     A profile information extractor that returns information from a Facebook
@@ -12,18 +13,18 @@ class FacebookExtractor(BaseExtractor):
     """
 
     FIELD_MAPPINGS = [
-        ('family_name', 'last_name'),
-        ('full_name', 'name'),
-        ('sex', 'gender'),
-        ('locale', 'locale')
-        ]
+        ("family_name", "last_name"),
+        ("full_name", "name"),
+        ("sex", "gender"),
+        ("locale", "locale"),
+    ]
 
     def __init__(self, oauth_access_token=None):
-        super(FacebookExtractor, self).__init__() 
+        super().__init__()
         self.api = GraphAPI(oauth_access_token)
 
     def extract(self):
-        username = self.get_config('username')
+        username = self.get_config("username")
         data = self.api.get_object(username)
 
         profile = dict()

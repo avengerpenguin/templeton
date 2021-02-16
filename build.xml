@@ -104,7 +104,7 @@
     <replace file="${debian.dir}/control" failOnNoReplacements="true" value="${project.description}">
       <replacetoken><![CDATA[<insert up to 60 chars description>]]></replacetoken>
     </replace>
-    
+
   </target>
 
   <target name="all">
