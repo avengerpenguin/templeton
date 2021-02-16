@@ -1,10 +1,13 @@
 """
 Base classes for designing components of a coat of arms.
 """
-class BaseDesigner(object):
+
+
+class BaseDesigner:
     """
     Overall parent class for any designer that ensures design() is implemented.
     """
+
     def design(self, profile):
         """
         Designs any part of a coat of arms as defined in the implementing child
@@ -13,4 +16,4 @@ class BaseDesigner(object):
         """
         raise NotImplementedError(
             "This designer doesn't know how to design anything yet."
-            )
+        )

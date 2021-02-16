@@ -1,12 +1,13 @@
 import unittest
-from mock import Mock
 
+from unittest.mock import Mock
 from templeton.design.coa import CoatOfArmsDesigner
+
 
 class CoatOfArmsDesignerTest(unittest.TestCase):
     def setUp(self):
         self.profile = dict()
-        self.shield = dict(some_key='some_value')
+        self.shield = dict(some_key="some_value")
 
     def testDesignReturnsDictContainingShieldDesign(self):
         coa_designer = CoatOfArmsDesigner()
@@ -17,4 +18,4 @@ class CoatOfArmsDesignerTest(unittest.TestCase):
         coa_designer.shield_designer = shield_designer
 
         coa = coa_designer.design(self.profile)
-        self.assertEquals(self.shield, coa['shield'])
+        self.assertEquals(self.shield, coa["shield"])
