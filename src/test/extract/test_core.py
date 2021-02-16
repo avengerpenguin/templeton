@@ -11,16 +11,21 @@ class BaseExtractorTest(unittest.TestCase):
         self.invalid_config_key = "valid config key"
 
     def testSetAndGetConfig(self):
-        self.extractor.set_config(self.valid_config_key, self.valid_config_value)
+        self.extractor.set_config(
+            self.valid_config_key, self.valid_config_value
+        )
         self.assertEquals(
-            self.valid_config_value, self.extractor.get_config(self.valid_config_key)
+            self.valid_config_value,
+            self.extractor.get_config(self.valid_config_key),
         )
 
     def testGetConfigThrowsErrorWhenConfigNotSet(self):
         try:
             self.extractor.get_config(self.invalid_config_key)
         except ConfigNotSetError, e:
-            self.assertEquals("Config not set: %s" % self.invalid_config_key, str(e))
+            self.assertEquals(
+                "Config not set: %s" % self.invalid_config_key, str(e)
+            )
         else:
             fail("Expected a config error when fetching invalid key.")
 

@@ -112,7 +112,9 @@ class GraphAPI:
         extended permissions.
         """
         assert self.access_token, "Write operations require an access token"
-        return self.request(parent_object + "/" + connection_name, post_args=data)
+        return self.request(
+            parent_object + "/" + connection_name, post_args=data
+        )
 
     def put_wall_post(self, message, attachment=None, profile_id="me"):
         """Writes a wall post to the given profile's wall.
@@ -132,7 +134,9 @@ class GraphAPI:
         """
         if not attachment:
             attachment = {}
-        return self.put_object(profile_id, "feed", message=message, **attachment)
+        return self.put_object(
+            profile_id, "feed", message=message, **attachment
+        )
 
     def put_comment(self, object_id, message):
         """Writes the given comment on the given post."""
@@ -161,7 +165,10 @@ class GraphAPI:
                 args["access_token"] = self.access_token
         post_data = None if post_args is None else urllib.urlencode(post_args)
         response_handle = urllib.urlopen(
-            "https://graph.facebook.com/" + path + "?" + urllib.urlencode(args),
+            "https://graph.facebook.com/"
+            + path
+            + "?"
+            + urllib.urlencode(args),
             post_data,
         )
         try:
@@ -169,7 +176,9 @@ class GraphAPI:
         finally:
             response_handle.close()
         if response.get("error"):
-            raise GraphAPIError(response["error"]["type"], response["error"]["message"])
+            raise GraphAPIError(
+                response["error"]["type"], response["error"]["message"]
+            )
         return response
 
 
@@ -202,7 +211,9 @@ def get_user_from_cookie(cookies, app_id, app_secret):
     if not cookie:
         return None
     args = {k: v[-1] for k, v in cgi.parse_qs(cookie.strip('"')).items()}
-    payload = "".join(k + "=" + args[k] for k in sorted(args.keys()) if k != "sig")
+    payload = "".join(
+        k + "=" + args[k] for k in sorted(args.keys()) if k != "sig"
+    )
     sig = hashlib.md5(payload + app_secret).hexdigest()
     expires = int(args["expires"])
     if sig == args.get("sig") and (expires == 0 or time.time() < expires):

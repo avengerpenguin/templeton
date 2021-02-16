@@ -1,6 +1,6 @@
 import unittest
-
 from unittest.mock import Mock
+
 from templeton.design.coa import CoatOfArmsDesigner
 
 
