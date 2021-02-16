@@ -33,7 +33,9 @@ class MottoIllustrator(BaseIllustrator):
         pre_filename = os.path.join("/", "tmp", "%s-pre.png" % uid)
         post_filename = os.path.join("/", "tmp", "%s-post.png" % uid)
 
-        motto_draw.text((text_x_offset, 10), motto, fill=text_colour, font=font)
+        motto_draw.text(
+            (text_x_offset, 10), motto, fill=text_colour, font=font
+        )
         # motto_image = motto_image.convert('RGBA')
         motto_image.save(pre_filename, "PNG")
 

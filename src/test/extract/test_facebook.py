@@ -1,6 +1,6 @@
 import unittest
-
 from unittest.mock import Mock
+
 from templeton.extract.facebook import FacebookExtractor
 
 
@@ -33,7 +33,8 @@ class FacebookExtractorTest(unittest.TestCase):
 
         self.extractor.api.mockSetExpectation(
             "get_object",
-            lambda mockobj, call, count: call.getParam(0) == self.facebook_username,
+            lambda mockobj, call, count: call.getParam(0)
+            == self.facebook_username,
         )
 
         self.extractor.extract()
@@ -44,7 +45,8 @@ class FacebookExtractorTest(unittest.TestCase):
 
         self.extractor.api.mockSetExpectation(
             "get_object",
-            lambda mockobj, call, count: call.getParam(0) == self.facebook_username,
+            lambda mockobj, call, count: call.getParam(0)
+            == self.facebook_username,
         )
 
         profile = self.extractor.extract()

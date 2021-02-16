@@ -373,7 +373,15 @@ class ShieldDesigner(BaseDesigner):
         ("9ACD32", "Yellow-green"),
     ]
 
-    ordinary_list = ["cross", "pale", "fess", "bend", "chevron", "saltire", "chief"]
+    ordinary_list = [
+        "cross",
+        "pale",
+        "fess",
+        "bend",
+        "chevron",
+        "saltire",
+        "chief",
+    ]
 
     def design(self, profile):
         """

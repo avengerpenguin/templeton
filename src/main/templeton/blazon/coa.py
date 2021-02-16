@@ -11,4 +11,6 @@ class CoatOfArmsBlazoner:
     other classes for those parts.
     """
 
-    blazon = lambda coa_design: "%s" % (ShieldBlazoner().blazon(coa_design["shield"]))
+    blazon = lambda coa_design: "%s" % (
+        ShieldBlazoner().blazon(coa_design["shield"])
+    )
