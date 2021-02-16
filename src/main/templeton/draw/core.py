@@ -17,4 +17,6 @@ class BaseIllustrator:
 
         An image object must also be passed in on which to draw modifications.
         """
-        raise NotImplementedError("This illustrator doesn't know how to draw anything.")
+        raise NotImplementedError(
+            "This illustrator doesn't know how to draw anything."
+        )
