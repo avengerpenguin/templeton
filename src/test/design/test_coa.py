@@ -18,4 +18,4 @@ class CoatOfArmsDesignerTest(unittest.TestCase):
         coa_designer.shield_designer = shield_designer
 
         coa = coa_designer.design(self.profile)
-        self.assertEquals(self.shield, coa["shield"])
+        self.assertEqual(self.shield, coa["shield"])

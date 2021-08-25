@@ -51,7 +51,7 @@ class FacebookExtractorTest(unittest.TestCase):
 
         profile = self.extractor.extract()
 
-        self.assertEquals(self.last_name, profile["family_name"])
-        self.assertEquals(self.name, profile["full_name"])
-        self.assertEquals(self.gender, profile["sex"])
-        self.assertEquals(self.locale, profile["locale"])
+        self.assertEqual(self.last_name, profile["family_name"])
+        self.assertEqual(self.name, profile["full_name"])
+        self.assertEqual(self.gender, profile["sex"])
+        self.assertEqual(self.locale, profile["locale"])
