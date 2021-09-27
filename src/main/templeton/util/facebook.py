@@ -188,7 +188,7 @@ class GraphAPIError(Exception):
     """
 
     def __init__(self, error_type, message):
-        Exception.__init__(self, message)
+        super().__init__(message)
         self.type = error_type
 
 
