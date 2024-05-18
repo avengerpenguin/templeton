@@ -1,6 +1,7 @@
 """
 Classes for drawing the shield component of a coat of arms.
 """
+
 from PIL import ImageColor, ImageDraw
 from templeton.draw.core import BaseIllustrator
 
