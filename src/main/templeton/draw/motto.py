@@ -1,6 +1,7 @@
 """
 Classes for drawing a motto section under the shield.
 """
+
 import os
 import subprocess
 import uuid
