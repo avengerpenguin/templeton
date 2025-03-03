@@ -2,6 +2,7 @@
 Classes relating to blazoning a Coat of Arms at the top level. Generally, code
 here will be passing down to the Blazoners for each constituent part.
 """
+
 from templeton.blazon.shield import ShieldBlazoner
 
 
