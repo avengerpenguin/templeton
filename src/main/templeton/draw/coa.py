@@ -1,6 +1,7 @@
 """
 Contains class for illustrating the overall coat of arms.
 """
+
 from PIL import Image
 from templeton.draw.core import BaseIllustrator
 from templeton.draw.motto import MottoIllustrator
